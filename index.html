@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Interactive Map</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  </head>
+
+  <body style="background-color: #ddd;">
+    <div id="page">
+      <div class="header" style="background-color: #000; height: 45px; width: 100%;">
+        <h1 style="padding-top: .25em; padding-left: 2em;">Trip Planner Me</h1>
+        <div>
+
+        </div>
+
+      </div>
+    <div class="banner">
+    </div>
+    <div style="height: 40px; width: 100%; background-color: #fff; border: 1px solid #ccc;">
+    </div>
+    <div style="display: block; text-align: center;">
+    <div id='map_box' class="shadow" style="margin-top: 2em; background-color:#fff; width: 800px; height: 500px; border-radius: 5px; display: inline-block; width: 60%;">
+
+      <div id="details" class="shadow" style="width: 270px; position:absolute; padding: .5em;">
+        <form id="name_form" >
+          <input id="location_name" type="text" placeholder="city" style="font-size: .8em; padding: .5em; border: none; border: 2px solid #ccc; border-radius: 8px;">
+          <button type="button" style="cursor: pointer; font-family: Helvetica; padding: .75em 1em .5em 1em; border: none; margin-left: .5em; border: 2px solid #bc136c; border-radius: 25px; font-weight: bold; background-color: #e21a79; color: #fff;"onclick="SetName()">ENTER</button>
+        </form>
+      </div>
+
+      <div id="hover_box" class ="shadow" style="padding: .5em; width: 200px; position:absolute; display: none; background: #fff;">
+        <div id="exit" onClick=hideHoverBox()>
+        </div>
+        <img src="" id="big_image">
+      </div>
+
+
+
+      <svg id='map' xmlns='http://www.w3.org/2000/svg' xml:space="preserve" version='1.1' height='500px' width='800px'>
+
+        <defs>
+
+          <pattern id="map" height="100%" width="100%" patternContentUnits="objectBoundingBox" viewBox="0 0 1 1" preserveAspectRatio="xMidYMid slice">
+              <image xlink:href="images/map.png" height="1" width="1"  />
+          </pattern>
+
+
+
+          <pattern id="mario_0" height="100%" width="100%" patternContentUnits="objectBoundingBox" viewBox="0 0 1 1" preserveAspectRatio="xMidYMid slice">
+              <image xlink:href="images/mario_0.png" height="1" width="1"  preserveAspectRatio="xMidYMid slice"  />
+          </pattern>
+
+          <pattern id="mario_1" height="100%" width="100%" patternContentUnits="objectBoundingBox" viewBox="0 0 1 1" preserveAspectRatio="xMidYMid slice">
+              <image xlink:href="images/mario_1.png" height="1" width="1"  preserveAspectRatio="xMidYMid slice"  />
+          </pattern>
+
+          <pattern id="mario_2" height="100%" width="100%" patternContentUnits="objectBoundingBox" viewBox="0 0 1 1" preserveAspectRatio="xMidYMid slice">
+              <image xlink:href="images/mario_2.png" height="1" width="1"  preserveAspectRatio="xMidYMid slice"  />
+          </pattern>
+
+          <pattern id="mario_3" height="100%" width="100%" patternContentUnits="objectBoundingBox" viewBox="0 0 1 1" preserveAspectRatio="xMidYMid slice">
+              <image xlink:href="images/mario_3.png" height="1" width="1"  preserveAspectRatio="xMidYMid slice"  />
+          </pattern>
+
+          <pattern id="mario_4" height="100%" width="100%" patternContentUnits="objectBoundingBox" viewBox="0 0 1 1" preserveAspectRatio="xMidYMid slice">
+              <image xlink:href="images/mario_4.png" height="1" width="1"  preserveAspectRatio="xMidYMid slice"  />
+          </pattern>
+
+
+        </defs>
+
+        <rect fill="url(#map)" onclick='clickSVG(event)'  x='0' y='0' width='800px'height='500px' />
+
+
+      </svg>
+
+
+
+    </div>
+    <div class="shadow"style="display: inline-block; height: 500px; margin-left: 1%; width: 35%; background-color: #fff; border-radius: 5px;">
+    </div>
+    </div>
+    <div style="height: 400px; width: 100%; background-color: #fff; border: 1px solid #ccc; margin-top: 1em;">
+    </div>
+  </div>
+
+  </body>
+
+  <script>
+  function Location(left, top) {
+        this.left = left;
+        this.top  = top;
+        this.name = "";
+        this.image ="";
+    };
+
+  var locations = new Array;
+
+  function clickLocation(event,i){
+    //alert("code this");
+
+    var left = locations[i].left + $('#map').position().left ;
+    var top  = locations[i].top  + $('#map').position().top;
+    var image  = locations[i].image;
+
+
+
+    //alert(mouse_left + ' ' + mouse_top)
+
+    $("#hover_box").show();
+    $("#hover_box").css('left', left );
+    $("#hover_box").css('top', top);
+    $("#big_image").attr("src", image);
+
+
+  };
+
+
+  function clickSVG(event){
+
+    var mouse_left = event.pageX - $('#map').position().left ;
+    var mouse_top = event.pageY - $('#map').position().top;
+    //alert(mouse_left + ' ' + mouse_top)
+
+    $("#details").show();
+    $("#details").css('left', event.pageX );
+    $("#details").css('top', event.pageY );
+
+    var my_location = new Location(mouse_left, mouse_top);
+
+    my_location.name = ""
+    locations.push(my_location)
+    x = locations[locations.length-1].left;
+    y = locations[locations.length-1].top;
+
+
+
+    var existing_content = $('#map').html();
+
+    pattern = 'mario_' +Math.floor(Math.random() * 5)
+
+    locations[locations.length-1].image = 'images/'+pattern+'.png';
+
+    image_y = y - 30;
+    image_x = x - 80;
+    i=locations.length-1;
+    var new_circle = "<circle cx='" + x + "' cy='" + y + "' r='5' stroke='black' stroke-width='1' fill='red' />";
+    var new_image = "<rect fill='url(#" + pattern + ")' onmouseover='clickLocation(event,"+i+")' x='" + image_x + "' y='" + image_y + "' width='70px' height='70px' />";
+
+
+    if(i>0){
+
+      x_prev = locations[locations.length-2].left;
+      y_prev = locations[locations.length-2].top;
+
+      x_control = (x+x_prev)/2*1.05;
+      y_control = (y+y_prev)/2*1.05;
+
+
+      var new_arc = "<path d='M"+x_prev+" "+y_prev+" Q"+x_control+" "+y_control+" "+x+" "+y+" "+"' stroke='#e21a79' stroke-width='3' fill='transparent'/>";
+      $('#map').html(existing_content  + new_circle + new_arc+ new_image);
+
+
+    } else{
+      $('#map').html(existing_content + new_image + new_circle);
+
+    }
+
+
+
+  };
+
+
+
+
+
+
+
+  function SetName(){
+  //$( "#name_form" ).submit(function( event) {
+
+    $("#details").hide();
+    var location_name = $("#location_name").val();
+    $("#location_name").val('');
+
+    locations[locations.length-1].name = location_name;
+
+    text_x = locations[locations.length-1].left + 12;
+    text_y = locations[locations.length-1].top +8;
+    //alert(x + "  " + y);
+
+    var existing_content = $('#map').html();
+    var new_text = "<text x='" + text_x + "' y='" + text_y + "' font-family='Helvetica' font-size='18pt'>"+location_name+"</text> ";
+
+
+    $('#map').html(existing_content + new_text);
+
+
+
+  };
+
+
+
+
+  $('#location_name').on('keypress', function (e) {
+         if(e.which === 13){
+           e.preventDefault();
+           SetName();
+
+         }
+
+         if (e.keyCode === 27){
+           locations.pop();
+           $("#details").hide();
+           $("#location_name").val('');
+
+         }
+
+   });
+
+
+
+   function hideHoverBox() {
+     $("#hover_box").hide();
+   };
+
+   $( "#hover_box" ).mouseleave(function() { hideHoverBox(); });
+
+
+
+  </script>
+
+</html>

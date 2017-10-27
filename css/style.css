@@ -1,0 +1,77 @@
+/* Style for Screens */
+
+/* Importing Open Sans Font */
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+
+*{
+    margin: 0 auto;
+    padding: 0;
+    }
+html {-webkit-font-smoothing: antialiased;}
+body {
+    font-family: 'Open Sans', 'Helvetica Neue', sans-serif;
+    width:100%;
+    max-width:1400px;
+    font-size:18px;
+    font-weight:300;
+    color: #444;
+    }
+#page {box-shadow: 0px 10px 20px #555;}
+section {position: relative;}
+/* All the Words & Stuff */
+
+h1 {font-size: 1.2em;
+    font-weight: normal;
+    color: #fff;}
+h2 {font-size: 1.5em}
+h3 {font-size: 1.2em; font-weight: bold;}
+h4 {font-size: 2.5em; font-weight: normal; color: #555;}
+h5 {font-size: 1.8em; font-weight: normal;}
+a {font-size: 1em;
+    color: #f4f4f4;
+    text-decoration: none;
+    display: block;
+    }
+a:visited {color: #f4f4f4;}
+a.btn {font-size: .9em;}
+p {font-size: 1em;}
+b {display: inline-block;}
+.small {font-size: .8em;}
+
+#details {
+  display:none;
+  position: relative;
+  z-index: 1;
+  background-color: #fff;
+  border-color: blue;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.shadow {
+  -moz-box-shadow:    3px 3px 5px 6px #ccc;
+  -webkit-box-shadow: 3px 3px 5px 6px #ccc;
+  box-shadow:         3px 3px 5px 6px #ccc;}
+
+.shadow_light {
+    -moz-box-shadow:    3px 3px 3px 3px #ccc;
+    -webkit-box-shadow: 3px 3px 3px 3px #ccc;
+    box-shadow:         3px 3px 3px 3px #ccc;}
+
+  #exit {
+    width: 25px;
+    height: 25px;
+    background-image: url('../images/exit.png');
+    background-position: 0 0;
+    background-repeat: no-repeat;
+    float: right;
+    cursor: pointer;
+  }
+  .banner {
+    width: 100%;
+    height: 300px;
+    max-width: 1400px;
+    background-image: url('../images/mario_background.png');
+    background-position: 0 0;
+    background-repeat: no-repeat;
+  }
